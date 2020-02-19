@@ -35,16 +35,15 @@ class BookView(Api):
 	
 	async def get(self):
 		response_obj = { 'status' : 'hello!' }
-		return web.Response(text=json.dumps(response_obj))
+		return web.Response(
+			text=json.dumps(response_obj)
+			)
 
-class Redirect405(Api ):
-	"""docstring for ClassName"""
-	# def __init__(self,  request, *args, **kwargs):
-	# 	# super(Redirect405, self).__init__(request)
-	# 	# # self.request = request
-	# 	# # self.args = args
-	# 	# # self.kwargs = kwargs
-	# 	pass
+class AutorView(Api):
+
+	async def get(self):
+		return web.Response(
+			)
 
 
 		

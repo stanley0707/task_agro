@@ -1,4 +1,4 @@
-from .views import BookView, Api, Redirect405
+from .views import BookView
 
 def setup_routes(app, web):
     app.add_routes([
