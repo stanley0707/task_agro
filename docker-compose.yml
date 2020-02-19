@@ -1,12 +1,22 @@
 version: "3"
 
 services:
-  agro_book:
+  agro_book_server:
     build:
-      context: "."
+      context: "server/"
       args:
         APP_PORT: "8080"
         APP_HOST: "0.0.0.0"
-    command: python3 /opt/app/manage.py
+    command: python3 /opt/app/server/manage.py
     ports:
       - "8080:8080"
+  
+  agro_book_client:
+    build:
+      context: "client/"
+      args:
+        APP_PORT: "8081"
+        APP_HOST: "0.0.0.0"
+    command: python3 /opt/app/client/app.py
+    ports:
+      - "8081:8081"
