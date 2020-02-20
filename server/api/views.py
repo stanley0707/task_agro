@@ -11,18 +11,22 @@ from asyncio_extras import threadpool
 
 
 class Api(web.View):
-	
+	""" Api  Базовый класс API """
 	def __init__(self, request, *args, **kwargs):
 		super(Api, self).__init__(request)
-		self.args = args # основные параметры фильтрации
-		self.kwargs = kwargs
+		self.select = []# поумолчания сортировка по году издания
 		self.part = 5 # пагинация кол-во записей на странице
 		self.page = 1 # пагинация номер страницы
 		self.marker = (self.part * self.page) - self.part
 		self.status = 200
 		self.response_text='успешно'
+		self.args = args # основные параметры фильтрации
+		self.kwargs = kwargs
 		
 	def riaser(self):
+		# если в наследниках принимает
+		# запрос к неопределённому методу
+		# всегда возвращаем это исключнеие
 		return web.HTTPMethodNotAllowed(
 			method=self.request.method,
 			allowed_methods=self.request.method,
@@ -45,8 +49,12 @@ class Api(web.View):
 	async def delete(self):
 		raise self.riaser()
 
+
 class BaseApi(Api):
-	
+	""" BaseApi 
+	Содержим базоые или абстрактные методы
+	для наследование и общий функционал
+	"""
 	def orderizer(self):
 		try:
 			self.order = self.order_params[self.request.rel_url.query['order_by']]
@@ -54,17 +62,14 @@ class BaseApi(Api):
 			pass
 	
 	def params_construct(self):
+		# собираем только один параметр.
+		# отобрать книги, например, по автору и году нельзя
 		for k, v in self.request.rel_url.query.items():
 			print(k, v)
 			self.select.append(self.select_params(k, v))
 
 	
 	def init_paginate(self):
-		# елси параметры пагинации переданы в качестве аргументов
-		# в реквест заменияем self.page, self.part с 1 и 1 на полученные
-		# данные и удаляем их из массива. Если данные при просвоились,
-		# удалились из массива request_data и его длина ровна 0, то значит
-		# получен запрос на отображение всех записей без фильтрации
 		try:
 			self.page, self.part = int(self.request.rel_url.query['page']), int(self.request.rel_url.query['part'])
 		except KeyError:
@@ -88,9 +93,15 @@ class BaseApi(Api):
 	def write_method(self, msg):
 		with db_session:
 			try:
+				# если id есть и исключения нет,
+				# значит метод вызывается в контексте PUT
 				self.model = self.model[self.data['id']]
+				# вызывает set метод объекта книг Pony ORM
+				# и охраняем необходимые данные в памяти
 				self.model.set(**self.data)
 			except KeyError:
+				# id отсутсвует, метод write_method вызывается
+				# в контексте POST
 				self.model(**self.data)
 			
 			except ObjectNotFound:
@@ -100,6 +111,7 @@ class BaseApi(Api):
 			
 			else:
 				try:
+					# сохраняем данные в БД
 					commit()
 					self.response_text = msg
 				
@@ -112,6 +124,10 @@ class BaseApi(Api):
 					self.status = 400
 
 	def get_method(self):
+		# метод вызывется только в контексте GET
+		# 1) init_paginate -  инициализируем паджинацию
+		# 2) orderizer - собираем аргумент сортировки
+		# 3) params_construct - собираем параметры поиска если таковые были
 		self.init_paginate()
 		self.orderizer()
 		self.params_construct()
@@ -131,9 +147,12 @@ class BaseApi(Api):
 		self.status = 428
 
 
-
 class BookView(BaseApi):
-	
+	""" API  View ендпоинт книг.
+	Выполняем  GET, POST, PUT  и DELETE
+	с асинохронным контекстом threadpool
+
+	"""
 	# словарь сортировка
 	# можно добвать сортировку в обратном порядке по параметру API
 	order_params =  {
@@ -144,7 +163,6 @@ class BookView(BaseApi):
 	def __init__(self,  request, *args, **kwargs):
 		super(BookView, self).__init__(request)
 		self.order = self.order_params['year'] 
-		self.select = []# поумолчания сортировка по году издания
 		self.model = Book # модель данных View 
 		self.args = args
 		self.kwargs = kwargs
@@ -167,8 +185,8 @@ class BookView(BaseApi):
 					)
 	
 	async def post(self):
-		self.data = dict(await self.request.json())
 		async with threadpool():
+			self.data = dict(await self.request.json())
 			super().write_method('Книга усппешно сохранена')
 			return web.json_response(
 						text=self.response_text,
@@ -176,8 +194,8 @@ class BookView(BaseApi):
 					)
 
 	async def put(self):
-		self.data = await self.request.json()
 		async with threadpool():
+			self.data = dict(await self.request.json())
 			super().write_method('Книга усппешно изменена')
 			return web.json_response(
 						text=self.response_text,
@@ -185,18 +203,11 @@ class BookView(BaseApi):
 					)
 
 	async def delete(self):
-		self.data = await self.request.json()
 		async with threadpool():
+			self.data = dict(await self.request.json())
 			super().delete_method('Книга усппешно удалена')
 			return web.json_response(
 						text=self.response_text,
 						status=self.status
 					)
-
-class AutorView(Api):
-	async def get(self):
-		return web.Response(
-			)
-
-
 		

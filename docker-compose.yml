@@ -4,19 +4,23 @@ services:
   agro_book_server:
     build:
       context: "server/"
-      args:
-        APP_PORT: "8080"
-        APP_HOST: "0.0.0.0"
-    command: python3 /opt/app/server/manage.py
+    environment:
+      APP_PORT: "8080"
+      APP_HOST: "0.0.0.0"
+      DEBUG: "True"
+      CLIENT_PORT: "8081"
+      CLIENT_HOST: "0.0.0.0"
+    command: "python3 /opt/app/server/manage.py"
     ports:
       - "8080:8080"
   
   agro_book_client:
     build:
       context: "client/"
-      args:
-        APP_PORT: "8081"
-        APP_HOST: "0.0.0.0"
-    command: python3 /opt/app/client/app.py
+    environment:
+      APP_PORT: "8081"
+      APP_HOST: "0.0.0.0"
+      DEBUG: "True"
+    command: 'python3 /opt/app/client/app.py'
     ports:
       - "8081:8081"

@@ -6,8 +6,11 @@ ADD . /opt/app/client
 ARG APP_HOST=0.0.0.0
 ENV APP_HOST="${APP_HOST}"
 
-ARG APP_PORT=8080
+ARG APP_PORT=8081
 ENV APP_PORT="${APP_PORT}"
+
+ARG DEBUG=True
+ENV v="${DEBUG}"
 
 ENV STATIC_URL /static
 ENV STATIC_PATH /var/www/app/client/static

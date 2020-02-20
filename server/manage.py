@@ -1,20 +1,27 @@
-import aiohttp_cors
+"""  run porject python manage.py
+"""
+import asyncio
 from aiohttp import web
+from aiohttp_wsgi import WSGIHandler
+from aiohttp_middlewares import (
+		cors_middleware, error_middleware
+		)
 from api import setup_routes
-from aiohttp_middlewares import cors_middleware, error_middleware
-from aiohttp_middlewares.cors import DEFAULT_ALLOW_HEADERS
-
+from settings import(
+		HOST, PORT, CLIENT_PORT, DEBUG
+	)
 
 # ecтанавливаем кор доступ по незащищенному соединению для тестирования
-app = web.Application(
-	middlewares=(
-		cors_middleware(
-			origins=("http://localhost:8081", "http://localhost:8080"),
-			allow_credentials=True),
+def run():
+	app = web.Application(middlewares=(
+					cors_middleware(origins=(
+						"http://localhost:%s" % CLIENT_PORT, "http://localhost:%s" % PORT),
+						allow_credentials=True
+					), error_middleware(),
+				))
+	wsgi_handler = WSGIHandler(app)
+	setup_routes(app, web)
+	web.run_app(app, host=HOST, port=PORT)
 
-		error_middleware(),
-	)
-)
-
-setup_routes(app, web)
-web.run_app(app)
+if __name__ == '__main__':
+	run()
