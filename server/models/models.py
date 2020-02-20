@@ -1,6 +1,7 @@
 from datetime import date
 import pony.orm as model
 
+
 db = model.Database()
 # db.bind(
 # 	provider='postgres',
@@ -20,11 +21,13 @@ db.bind(provider='sqlite', filename='database.sqlite', create_db=True)
 
 class Book(db.Entity):
 	id = model.PrimaryKey(int, auto=True)
-	year = model.Required(date)
-	name = model.Required(str, max_len=40, unique=True)
-	description = model.Required(str, max_len=1000)
+	year = model.Required(str, max_len=5)
+	name = model.Required(str, max_len=200, unique=True)
+	description = model.Required(str, max_len=1000, nullable=True, sql_default='NULL')
 	author = model.Required(str, max_len=60)
-	model.composite_index(id, name)
+	model.composite_index(id, name, author)
+
+
 
 model.sql_debug(True)
 

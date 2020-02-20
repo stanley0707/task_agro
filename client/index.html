@@ -389,10 +389,10 @@ $(document).ready(function () {
             url: 'http://localhost:8080/api/books',
             type: 'GET',
             crossDomain: true,
-        	dataType: false,
-        	contentType: false,
-    		timeout: 15000, // 15  секунд
-            data: bookData,
+		    contentType: "application/json",
+		    dataType: 'json',
+		   	data: bookData,
+    		timeout: 15000,
 			
                     success: function (response) {
                       var receiveDate = (new Date()).getTime();
@@ -406,7 +406,7 @@ $(document).ready(function () {
                       var receiveDate = (new Date()).getTime();
                       var responseTimeMs = receiveDate - sendDate;
                       notifaction('Что-то пошло не так')
-                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+JSON.stringify(JSON.parse(response),null,4)+'<code></pre></li>');
+                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+JSON.stringify(response,null,4)+'<code></pre></li>');
                     }
 
                 });
@@ -419,15 +419,16 @@ $(document).ready(function () {
         bookData.name = $('#post_book_name').val();
         bookData.author =  $('#post_book_author').val();
         bookData.year = $('#post_book_year').val();
-        bookData.description =  $('#post_book_description').val();
+        bookData.description =  $('#post_book_desc').val();
 
 
         $.ajax({
             url: 'http://localhost:8080/api/books',
             type: 'POST',
             crossDomain: true,
-            dataType: false,
-            data: bookData,
+		    contentType: "application/json; charset=utf-8",
+		    dataType: 'json',
+		   	data: JSON.stringify(bookData),
 
 			
                     success: function (response) {
@@ -442,7 +443,7 @@ $(document).ready(function () {
                       var receiveDate = (new Date()).getTime();
                       var responseTimeMs = receiveDate - sendDate;
                       notifaction('Что-то пошло не так')
-                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+JSON.stringify(JSON.parse(response),null,4)+'<code></pre></li>');
+                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+ JSON.stringify(response,null,4)+'<code></pre></li>');
                     }
 
                 });
@@ -456,31 +457,33 @@ $(document).ready(function () {
 	        bookData.name = $('#put_book_name').val();
 	        bookData.author =  $('#put_book_author').val();
 	        bookData.year = $('#put_book_year').val();
-	        bookData.description =  $('#put_book_description').val();
+	        bookData.description =  $('#put_book_desc').val();
 
 
 	        $.ajax({
 	            url: 'http://localhost:8080/api/books',
 	            type: 'PUT',
 	            crossDomain: true,
-	        	dataType: false,
-	        	contentType: false,
-	        	processData: false,
-	    		data: bookData,
+	            contentType:"application/json; charset=utf-8",
+	        	dataType: 'json',
+	    		data: JSON.stringify(bookData),
+			
 			
                     success: function (response) {
+                    console.log('qweqweqweq', response)
                       var receiveDate = (new Date()).getTime();
                       var responseTimeMs = receiveDate - sendDate;
-                      notifaction('книга успешно создана')
+                      notifaction('книга успешно изменена')
 
                       $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#b2fbb2;">'+ JSON.stringify(JSON.parse(response),null,4)+'</code></pre></li>');
                     },
 
                     error: function (response) {
+                    	console.log('asasdasfa', response)
                       var receiveDate = (new Date()).getTime();
                       var responseTimeMs = receiveDate - sendDate;
                       notifaction('Что-то пошло не так')
-                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+JSON.stringify(JSON.parse(response),null,4)+'<code></pre></li>');
+                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+ JSON.stringify(response,null,4)+'<code></pre></li>');
                     }
 
                 });
@@ -488,19 +491,19 @@ $(document).ready(function () {
 
 	    $("#book_del_button").click(function () {
                 var sendDate = (new Date()).getTime();
-                var account_data = new Object();
-                account_data.id = $('#book_del_id').val();
-                account_data.success_del = false;
+                var bookData = new Object();
+                bookData.id = $('#book_del_id').val();
+                bookData.success_del = false;
 
                 if ($('#success_del_book').is(":checked")){
-                    account_data.success_del = true
+                    bookData.success_del = true
                 }
 
                 $.ajax({
                     url: 'http://localhost:8080/api/books',
                     type: 'DELETE',
-                    data: account_data,
-                    crossDomain: true,
+		            contentType: "application/json; charset=utf-8",
+		    		data: JSON.stringify(bookData),
 
                     success: function (response) {
                       var receiveDate = (new Date()).getTime();
@@ -514,7 +517,7 @@ $(document).ready(function () {
                       var receiveDate = (new Date()).getTime();
                       var responseTimeMs = receiveDate - sendDate;
                       notifaction('Что-то пошло не так')
-                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+JSON.stringify(JSON.parse(response),null,4)+'<code></pre></li>');
+                      $('#result').append('<li class="descriptions_result"><h6> response: '+ responseTimeMs +' msec </h6><a type="button" class="close" onclick="$(this).parent().remove();">×</a><pre><code style="color:#ffa2a2;">'+JSON.stringify(response,null,4)+'<code></pre></li>');
                     }
 
                 });
@@ -579,7 +582,7 @@ $(document).ready(function () {
         <br>
     <div style="top:100px; width:90%; margin: auto;">
       <form id="form_put_books">
-      	id :- <input type="text" name="put_id_book" id="put_id_book" />  <br/>
+      	id :- <input type="text" name="put_book_id" id="put_book_id" />  <br/>
       	автор :- <input type="text" name="put_book_author" id="put_book_author" />  <br/>
         год :- <input type="text" name="put_book_year" id="put_book_year" />  <br/>
         название :- <input type="text" name="put_book_name" id="put_book_name" />  <br/>
@@ -607,5 +610,7 @@ $(document).ready(function () {
   </ul>
 <ul id='result'>
 </ul>
+<div class="notify" id="notify">
+</div>
 </body>
 </html>

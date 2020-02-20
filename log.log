@@ -1,0 +1,109 @@
+Building agro_book_client
+Step 1/13 : FROM ubuntu:16.04
+ ---> 96da9143fb18
+Step 2/13 : WORKDIR /opt/app/client
+ ---> Using cache
+ ---> 758a5b6803d4
+Step 3/13 : COPY requirements.txt /opt/app/server/requirements.txt
+ ---> Using cache
+ ---> 2110f8c82e9f
+Step 4/13 : ADD . /opt/app/client
+ ---> 4fa3d245a249
+Step 5/13 : ARG APP_HOST=0.0.0.0
+ ---> Running in 7b962e429eaa
+Removing intermediate container 7b962e429eaa
+ ---> 795810f7a3a5
+Step 6/13 : ENV APP_HOST="${APP_HOST}"
+ ---> Running in 2d296a6496db
+Removing intermediate container 2d296a6496db
+ ---> 436ec6378f92
+Step 7/13 : ARG APP_PORT=8080
+ ---> Running in 18009741208e
+Removing intermediate container 18009741208e
+ ---> c9aedb04d7d5
+Step 8/13 : ENV APP_PORT="${APP_PORT}"
+ ---> Running in 4818ca002e06
+Removing intermediate container 4818ca002e06
+ ---> e5a2ed5dfcad
+Step 9/13 : ENV STATIC_URL /static
+ ---> Running in 311695c7e665
+Removing intermediate container 311695c7e665
+ ---> 97f495de11f2
+Step 10/13 : ENV STATIC_PATH /var/www/app/client/static
+ ---> Running in 41a466591285
+Removing intermediate container 41a466591285
+ ---> 16162add9188
+Step 11/13 : FROM python:3.6.5
+ ---> 9a58cce9b09f
+Step 12/13 : COPY . /opt/app/client
+ ---> f3413e36800a
+Step 13/13 : RUN pip3 install -r /opt/app/client/requirements.txt
+ ---> Running in 8f91e0addb7f
+Collecting attrs==19.3.0 (from -r /opt/app/client/requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/a2/db/4313ab3be961f7a763066401fb77f7748373b6094076ae2bda2806988af6/attrs-19.3.0-py2.py3-none-any.whl
+Collecting cffi==1.14.0 (from -r /opt/app/client/requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/f1/c7/72abda280893609e1ddfff90f8064568bd8bcb2c1770a9d5bb5edb2d1fea/cffi-1.14.0-cp36-cp36m-manylinux1_x86_64.whl (399kB)
+Collecting chardet==3.0.4 (from -r /opt/app/client/requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl (133kB)
+Collecting Click==7.0 (from -r /opt/app/client/requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/fa/37/45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec/Click-7.0-py2.py3-none-any.whl (81kB)
+Collecting cryptography==2.8 (from -r /opt/app/client/requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/45/73/d18a8884de8bffdcda475728008b5b13be7fbef40a2acc81a0d5d524175d/cryptography-2.8-cp34-abi3-manylinux1_x86_64.whl (2.3MB)
+Collecting Flask==1.1.1 (from -r /opt/app/client/requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/9b/93/628509b8d5dc749656a9641f4caf13540e2cdec85276964ff8f43bbb1d3b/Flask-1.1.1-py2.py3-none-any.whl (94kB)
+Collecting gunicorn==20.0.4 (from -r /opt/app/client/requirements.txt (line 7))
+  Downloading https://files.pythonhosted.org/packages/69/ca/926f7cd3a2014b16870086b2d0fdc84a9e49473c68a8dff8b57f7c156f43/gunicorn-20.0.4-py2.py3-none-any.whl (77kB)
+Collecting idna==2.9 (from -r /opt/app/client/requirements.txt (line 8))
+  Downloading https://files.pythonhosted.org/packages/89/e3/afebe61c546d18fb1709a61bee788254b40e736cff7271c7de5de2dc4128/idna-2.9-py2.py3-none-any.whl (58kB)
+Collecting idna-ssl==1.1.0 (from -r /opt/app/client/requirements.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/46/03/07c4894aae38b0de52b52586b24bf189bb83e4ddabfe2e2c8f2419eec6f4/idna-ssl-1.1.0.tar.gz
+Collecting itsdangerous==1.1.0 (from -r /opt/app/client/requirements.txt (line 10))
+  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting Jinja2==2.11.1 (from -r /opt/app/client/requirements.txt (line 11))
+  Downloading https://files.pythonhosted.org/packages/27/24/4f35961e5c669e96f6559760042a55b9bcfcdb82b9bdb3c8753dbe042e35/Jinja2-2.11.1-py2.py3-none-any.whl (126kB)
+Collecting MarkupSafe==1.1.1 (from -r /opt/app/client/requirements.txt (line 12))
+  Downloading https://files.pythonhosted.org/packages/b2/5f/23e0023be6bb885d00ffbefad2942bc51a620328ee910f64abe5a8d18dd1/MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl
+Collecting multidict==4.7.4 (from -r /opt/app/client/requirements.txt (line 13))
+  Downloading https://files.pythonhosted.org/packages/06/5a/d423c846bb839105143d4cd90da19d0f3fc972c51be651f92ac419a20698/multidict-4.7.4-cp36-cp36m-manylinux1_x86_64.whl (147kB)
+Collecting six==1.14.0 (from -r /opt/app/client/requirements.txt (line 14))
+  Downloading https://files.pythonhosted.org/packages/65/eb/1f97cb97bfc2390a276969c6fae16075da282f5058082d4cb10c6c5c1dba/six-1.14.0-py2.py3-none-any.whl
+Collecting typing-extensions==3.7.4.1 (from -r /opt/app/client/requirements.txt (line 15))
+  Downloading https://files.pythonhosted.org/packages/03/92/705fe8aca27678e01bbdd7738173b8e7df0088a2202c80352f664630d638/typing_extensions-3.7.4.1-py3-none-any.whl
+Collecting Werkzeug==1.0.0 (from -r /opt/app/client/requirements.txt (line 16))
+  Downloading https://files.pythonhosted.org/packages/ba/a5/d6f8a6e71f15364d35678a4ec8a0186f980b3bd2545f40ad51dd26a87fb1/Werkzeug-1.0.0-py2.py3-none-any.whl (298kB)
+Collecting yarl==1.4.2 (from -r /opt/app/client/requirements.txt (line 17))
+  Downloading https://files.pythonhosted.org/packages/95/8f/0209fc5d975f839344c33c822ff2f7ef80f6b1e984673a5a68f960bfa583/yarl-1.4.2-cp36-cp36m-manylinux1_x86_64.whl (252kB)
+Collecting pycparser (from cffi==1.14.0->-r /opt/app/client/requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/68/9e/49196946aee219aead1290e00d1e7fdeab8567783e83e1b9ab5585e6206a/pycparser-2.19.tar.gz (158kB)
+Requirement already satisfied: setuptools>=3.0 in /usr/local/lib/python3.6/site-packages (from gunicorn==20.0.4->-r /opt/app/client/requirements.txt (line 7)) (39.2.0)
+Building wheels for collected packages: idna-ssl, pycparser
+  Running setup.py bdist_wheel for idna-ssl: started
+  Running setup.py bdist_wheel for idna-ssl: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/d3/00/b3/32d613e19e08a739751dd6bf998cfed277728f8b2127ad4eb7
+  Running setup.py bdist_wheel for pycparser: started
+  Running setup.py bdist_wheel for pycparser: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/f2/9a/90/de94f8556265ddc9d9c8b271b0f63e57b26fb1d67a45564511
+Successfully built idna-ssl pycparser
+Installing collected packages: attrs, pycparser, cffi, chardet, Click, six, cryptography, MarkupSafe, Jinja2, itsdangerous, Werkzeug, Flask, gunicorn, idna, idna-ssl, multidict, typing-extensions, yarl
+Successfully installed Click-7.0 Flask-1.1.1 Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 attrs-19.3.0 cffi-1.14.0 chardet-3.0.4 cryptography-2.8 gunicorn-20.0.4 idna-2.9 idna-ssl-1.1.0 itsdangerous-1.1.0 multidict-4.7.4 pycparser-2.19 six-1.14.0 typing-extensions-3.7.4.1 yarl-1.4.2
+[91mYou are using pip version 10.0.1, however version 20.0.2 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+[0mRemoving intermediate container 8f91e0addb7f
+ ---> 82dbe43c14fa
+Successfully built 82dbe43c14fa
+Successfully tagged agro_book_agro_book_client:latest
+Recreating agro_book_agro_book_client_1 ... 
+[1A[2KRecreating agro_book_agro_book_client_1 ... [32mdone[0m[1BAttaching to agro_book_agro_book_client_1
+[36magro_book_client_1  |[0m  * Serving Flask app "app" (lazy loading)
+[36magro_book_client_1  |[0m  * Environment: production
+[36magro_book_client_1  |[0m    WARNING: This is a development server. Do not use it in a production deployment.
+[36magro_book_client_1  |[0m    Use a production WSGI server instead.
+[36magro_book_client_1  |[0m  * Debug mode: on
+[36magro_book_client_1  |[0m  * Running on http://0.0.0.0:8081/ (Press CTRL+C to quit)
+[36magro_book_client_1  |[0m  * Restarting with stat
+[36magro_book_client_1  |[0m  * Debugger is active!
+[36magro_book_client_1  |[0m  * Debugger PIN: 209-528-906
+[36magro_book_client_1  |[0m 172.19.0.1 - - [20/Feb/2020 04:11:16] "[37mGET / HTTP/1.1[0m" 200 -
+[36magro_book_client_1  |[0m 172.19.0.1 - - [20/Feb/2020 04:11:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[36magro_book_client_1  |[0m 172.19.0.1 - - [20/Feb/2020 04:11:18] "[37mGET / HTTP/1.1[0m" 200 -
+[36magro_book_client_1  |[0m 172.19.0.1 - - [20/Feb/2020 04:11:19] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
