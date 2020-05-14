@@ -151,8 +151,8 @@ class BookView(BaseApi):
 	""" API  View ендпоинт книг.
 	Выполняем  GET, POST, PUT  и DELETE
 	с асинохронным контекстом threadpool
-
 	"""
+
 	# словарь сортировка
 	# можно добвать сортировку в обратном порядке по параметру API
 	order_params =  {
@@ -177,36 +177,32 @@ class BookView(BaseApi):
 		}[key]
 	
 	async def get(self):
-		async with threadpool():
-			super().get_method()
-			return web.json_response(
+		super().get_method()
+		return web.json_response(
 						self.serializer(),
 						status=self.status
 					)
 	
 	async def post(self):
-		async with threadpool():
-			self.data = dict(await self.request.json())
-			super().write_method('Книга усппешно сохранена')
-			return web.json_response(
+		self.data = dict(await self.request.json())
+		super().write_method('Книга усппешно сохранена')
+		return web.json_response(
 						text=self.response_text,
 						status=self.status
 					)
 
 	async def put(self):
-		async with threadpool():
-			self.data = dict(await self.request.json())
-			super().write_method('Книга усппешно изменена')
-			return web.json_response(
+		self.data = dict(await self.request.json())
+		super().write_method('Книга усппешно изменена')
+		return web.json_response(
 						text=self.response_text,
 						status=self.status
 					)
 
 	async def delete(self):
-		async with threadpool():
-			self.data = dict(await self.request.json())
-			super().delete_method('Книга усппешно удалена')
-			return web.json_response(
+		self.data = dict(await self.request.json())
+		super().delete_method('Книга усппешно удалена')
+		return web.json_response(
 						text=self.response_text,
 						status=self.status
 					)
