@@ -1,26 +1,34 @@
 version: "3"
 
 services:
-  agro_book_server:
+
+  redis:
+    image: redis
+  
+  link_cheker_server:
     build:
       context: "server/"
+    links:
+       - redis
     environment:
-      APP_PORT: "8080"
-      APP_HOST: "0.0.0.0"
+      SERVER_PORT: "8081"
+      SERVER_HOST: "0.0.0.0"
       DEBUG: "True"
-      CLIENT_PORT: "8081"
+      CLIENT_PORT: "8000"
       CLIENT_HOST: "0.0.0.0"
-    command: "python3 /opt/app/server/manage.py"
+      REDIS_URL: "redis"
+    command: "gunicorn --chdir /opt/app/server/ manage:run --bind localhost:8081 --worker-class aiohttp.GunicornWebWorker"
     ports:
-      - "8080:8080"
+      - "8081:8081"
   
-  agro_book_client:
+  link_cheker_client:
     build:
       context: "client/"
     environment:
-      APP_PORT: "8081"
-      APP_HOST: "0.0.0.0"
+      CLIENT_PORT: "8000"
+      CLIENT_HOST: "0.0.0.0"
       DEBUG: "True"
     command: 'python3 /opt/app/client/app.py'
     ports:
-      - "8081:8081"
+      - "8000:8000"
+
